@@ -1,6 +1,7 @@
 from sshtunnel import SSHTunnelForwarder
-from os import getenv
+from os import getenv, getcwd
 from urllib.parse import quote
+from dotenv import load_dotenv, find_dotenv
 
 
 class SSHTunnel(object):
@@ -30,7 +31,9 @@ class SSHTunnel(object):
         self.local_port = local_port
 
     def __load_env(self):
-        return load_dotenv()
+        if self.env != 'production':
+            env_file = getcwd() + '/.env'
+            return load_dotenv(env_file)
 
     def __call__(self, function, remote='0.0.0.0', *args, **kwargs):
 
